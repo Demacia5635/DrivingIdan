@@ -78,7 +78,8 @@ public class Drive extends CommandBase {
         // TO DO: Decide if and when we want to use isQuickTurn, and what button to put it on
         zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
         xSpeed = controller.getY(Hand.kLeft); 
-        chassis.curvatureDrive(xSpeed, zRotation, true); 
+        isQuickTurn = controller.getAButtonPressed(Hand.kBumperRight); 
+        chassis.curvatureDrive(xSpeed, zRotation, isQuickTurn); 
 
   }
 
