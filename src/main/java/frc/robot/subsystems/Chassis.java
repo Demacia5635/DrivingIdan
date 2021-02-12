@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode; // import control modes
-import com.ctre.phoenix.motorcontrol.can.WPI_WPI_TalonFX; // import the tlaonFX
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX; // import the tlaonFX
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup; // import the speed control group type
