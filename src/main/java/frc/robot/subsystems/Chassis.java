@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode; // import control modes
 import com.ctre.phoenix.motorcontrol.can.TalonFX; // import the tlaonFX
 import com.ctre.phoenix.sensors.PigeonIMU;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup; // import the speed control group type
 import edu.wpi.first.wpilibj.drive.DifferentialDrive; // import the diffrential drive
 // some debugging power
@@ -218,11 +219,7 @@ public class Chassis extends SubsystemBase {
     setVelocity(right, left);
   }
 
-<<<<<<< HEAD
-  public void ArcadeDrive(
-=======
   public void arcadeDrive(
->>>>>>> e219d39ca5c52ec71540ed744912d4ce8c46b99e
     double xSpeed,
     double zRotation,
     boolean squareInputs
@@ -236,11 +233,7 @@ public class Chassis extends SubsystemBase {
     this.m_drive.arcadeDrive(xSpeed, zRotation, squareInputs);
   }
 
-<<<<<<< HEAD
-  public void CurvatureDrive(
-=======
   public void curvatureDrive(
->>>>>>> e219d39ca5c52ec71540ed744912d4ce8c46b99e
     double xSpeed,
     double zRotation,
     boolean isQuickTurn
@@ -248,9 +241,8 @@ public class Chassis extends SubsystemBase {
     //     xSpeed - The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
     // zRotation - The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     // isQuickTurn - If set, overrides constant-curvature turning for turn-in-place maneuvers.
-    this.leftMotors = new SpeedControllerGroup(this.frontLeft, this.backLeft);
-    this.rightMotors =
-      new SpeedControllerGroup(this.frontRight, this.backRight);
+    this.leftMotors = new SpeedControllerGroup((SpeedController)this.frontLeft, (SpeedController)this.backLeft);
+    this.rightMotors = new SpeedControllerGroup((SpeedController)this.frontRight, (SpeedController)this.backRight);
     this.m_drive = new DifferentialDrive(this.leftMotors, this.rightMotors);
     this.m_drive.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
