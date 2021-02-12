@@ -226,9 +226,8 @@ public class Chassis extends SubsystemBase {
     //     xSpeed - The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
     // zRotation - The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     // squareInputs - If set, decreases the input sensitivity at low speeds.
-    this.leftMotors = new SpeedControllerGroup(this.frontLeft, this.backLeft);
-    this.rightMotors =
-      new SpeedControllerGroup(this.frontRight, this.backRight);
+    this.leftMotors = new SpeedControllerGroup((SpeedController)this.frontLeft, (SpeedController)this.backLeft);
+    this.rightMotors = new SpeedControllerGroup((SpeedController)this.frontRight, (SpeedController)this.backRight);
     this.m_drive = new DifferentialDrive(this.leftMotors, this.rightMotors);
     this.m_drive.arcadeDrive(xSpeed, zRotation, squareInputs);
   }

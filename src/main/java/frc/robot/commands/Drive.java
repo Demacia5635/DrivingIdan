@@ -27,6 +27,7 @@ public class Drive extends CommandBase {
   private final Chassis chassis;
   private XboxController controller;
   private InputHandler inputHandler;
+  private driveStates driveStates; 
   /**
    * Creates a new Drive.
    */
@@ -68,19 +69,21 @@ public class Drive extends CommandBase {
         chassis.radialAccelaration(velocity, turns);
         break;
     }
+    double zRotation = -5, xSpeed = 5; 
     switch(driveStates) {
       case arcadeDrive: 
         zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
         xSpeed = controller.getY(Hand.kLeft); 
         chassis.arcadeDrive(xSpeed, zRotation, true); 
-      }
+        break; 
       case curvatureDrive:
         // TO DO: Decide if and when we want to use isQuickTurn, and what button to put it on
-        zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
+        zRotation = toDegrees(atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
         xSpeed = controller.getY(Hand.kLeft); 
-        isQuickTurn = controller.getAButtonPressed(Hand.kBumperRight); 
+        isQuickTurn = controller.getBumper(Hand.kRight);
         chassis.curvatureDrive(xSpeed, zRotation, isQuickTurn); 
-
+        break; 
+    }
   }
 
   // Called once the command ends or is interrupted.
