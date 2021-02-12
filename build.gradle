@@ -57,6 +57,7 @@ dependencies {
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
     simulation wpi.deps.sim.gui(wpi.platforms.desktop, false)
+<<<<<<< HEAD
     simulation wpi.deps.sim.driverstation(wpi.platforms.desktop, false)
 
     // Websocket extensions require additional configuration.
@@ -68,6 +69,8 @@ dependencies {
 sim {
     // Sets the websocket client remote host.
     // envVar "HALSIMWS_HOST", "10.0.0.2"
+=======
+>>>>>>> e219d39ca5c52ec71540ed744912d4ce8c46b99e
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

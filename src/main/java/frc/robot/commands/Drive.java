@@ -21,21 +21,22 @@ public class Drive extends CommandBase {
   public enum InputHandler{
     tank,singer,triggerTurns,YandX, arcadeDrive, curvatureDrive
   }
-  public enum driveStates {
+  public enum DriveStates {
     curvatureDrive, arcadeDrive, angularVelocity, radialAccelaration
   }
   private final Chassis chassis;
   private XboxController controller;
   private InputHandler inputHandler;
-  private driveStates driveStates; 
+  private DriveStates driveState; 
   /**
    * Creates a new Drive.
    */
-  public Drive(Chassis chassis, InputHandler inputHandler) {
+  public Drive(Chassis chassis, InputHandler inputHandler, DriveStates driveState) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.chassis = chassis;
     controller = new XboxController(Constants.xboxPort);
     this.inputHandler = inputHandler;
+    this.driveState = driveState;
   }
 
   // Called when the command is initially scheduled.
@@ -53,7 +54,6 @@ public class Drive extends CommandBase {
       case YandX:
         velocity = controller.getY(Hand.kLeft);
         turns = controller.getX(Hand.kRight);
-        chassis.radialAccelaration(velocity, turns);
         break;
       case tank:
         chassis.setVelocity(controller.getY(Hand.kRight), controller.getY(Hand.kLeft));
@@ -61,28 +61,34 @@ public class Drive extends CommandBase {
       case singer:
         velocity = controller.getTriggerAxis(Hand.kRight)-controller.getTriggerAxis(Hand.kLeft);
         turns = controller.getX(Hand.kLeft);
-        chassis.radialAccelaration(velocity, turns);
         break;
       case triggerTurns:
         velocity = controller.getY(Hand.kLeft);
         turns = controller.getTriggerAxis(Hand.kRight)-controller.getTriggerAxis(Hand.kLeft);
-        chassis.radialAccelaration(velocity, turns);
         break;
     }
-    double zRotation = -5, xSpeed = 5; 
-    switch(driveStates) {
-      case arcadeDrive: 
-        zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
-        xSpeed = controller.getY(Hand.kLeft); 
-        chassis.arcadeDrive(xSpeed, zRotation, true); 
-        break; 
-      case curvatureDrive:
-        // TO DO: Decide if and when we want to use isQuickTurn, and what button to put it on
-        zRotation = toDegrees(atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
-        xSpeed = controller.getY(Hand.kLeft); 
-        isQuickTurn = controller.getBumper(Hand.kRight);
-        chassis.curvatureDrive(xSpeed, zRotation, isQuickTurn); 
-        break; 
+    if(inputHandler!=InputHandler.tank){
+      double zRotation = -5, xSpeed = 5; 
+      switch(driveState) {
+        case arcadeDrive: 
+          zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
+          xSpeed = controller.getY(Hand.kLeft); 
+          chassis.arcadeDrive(xSpeed, zRotation, true); 
+          break; 
+        case curvatureDrive:
+          // TO DO: Decide if and when we want to use isQuickTurn, and what button to put it on
+          zRotation = toDegrees(atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
+          xSpeed = controller.getY(Hand.kLeft); 
+          isQuickTurn = controller.getBumper(Hand.kRight);
+          chassis.curvatureDrive(xSpeed, zRotation, isQuickTurn); 
+          break; 
+        case radialAccelaration:
+          chassis.radialAccelaration(velocity, turns);
+          break;
+        case angularVelocity:
+          chassis.angularVelocity(velocity, turns);
+          break;
+      }
     }
   }
 
