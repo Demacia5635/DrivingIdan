@@ -218,7 +218,7 @@ public class Chassis extends SubsystemBase {
     setVelocity(right, left);
   }
 
-  public void ArcadeDrive(
+  public void arcadeDrive(
     double xSpeed,
     double zRotation,
     boolean squareInputs
@@ -232,7 +232,7 @@ public class Chassis extends SubsystemBase {
     this.m_drive.arcadeDrive(xSpeed, zRotation, squareInputs);
   }
 
-  public void CurvatureDrive(
+  public void curvatureDrive(
     double xSpeed,
     double zRotation,
     boolean isQuickTurn
