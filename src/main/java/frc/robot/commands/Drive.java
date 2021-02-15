@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Chassis;
-import java.lang.Math.toDegrees; 
-import java.lang.Math.atan; 
+import frc.robot.subsystems.Chassis; 
 
 
 public class Drive extends CommandBase {
@@ -77,15 +75,27 @@ public class Drive extends CommandBase {
           break; 
         case curvatureDrive:
           // TO DO: Decide if and when we want to use isQuickTurn, and what button to put it on
-          zRotation = toDegrees(atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
+          zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
           xSpeed = controller.getY(Hand.kLeft); 
-          isQuickTurn = controller.getBumper(Hand.kRight);
+          boolean isQuickTurn = controller.getBumper(Hand.kRight);
           chassis.curvatureDrive(xSpeed, zRotation, isQuickTurn); 
           break; 
         case radialAccelaration:
+          if (Math.abs(velocity) < 0.02) {
+            velocity = 0;
+          }
+          if (Math.abs(turns) < 0.005) {
+            turns = 0;
+          }
           chassis.radialAccelaration(velocity, turns);
           break;
         case angularVelocity:
+          if (Math.abs(velocity) < 0.02) {
+            velocity = 0;
+          }
+          if (Math.abs(turns) < 0.005) {
+            turns = 0;
+          }
           chassis.angularVelocity(velocity, turns);
           break;
       }

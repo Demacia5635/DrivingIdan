@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode; // import control modes
 import com.ctre.phoenix.motorcontrol.can.TalonFX; // import the tlaonFX
 import com.ctre.phoenix.sensors.PigeonIMU;
+
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup; // import the speed control group type
 import edu.wpi.first.wpilibj.drive.DifferentialDrive; // import the diffrential drive
 // some debugging power
@@ -168,12 +170,6 @@ public class Chassis extends SubsystemBase {
   }
 
   public void angularVelocity(double velocity, double turns) {
-    if (Math.abs(velocity) < 0.02) {
-      velocity = 0;
-    }
-    if (Math.abs(turns) < 0.005) {
-      turns = 0;
-    }
     velocity = velocity * Constants.maxVelocity;
     turns = turns * Constants.maxAngularVelocity;
     double right = 0;
@@ -183,8 +179,7 @@ public class Chassis extends SubsystemBase {
         right = ((velocity / turns) - (Constants.robotLength / 2)) * turns;
         left = ((velocity / turns) + (Constants.robotLength / 2)) * turns;
       } else if (turns < 0) {
-        right =
-          ((velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns);
+        right = ((velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns);
         left = ((velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns);
       } else {
         right = velocity;
@@ -192,12 +187,10 @@ public class Chassis extends SubsystemBase {
       }
     } else if (velocity < 0) {
       if (turns > 0) {
-        right =
-          -((((-velocity) / turns) - (Constants.robotLength / 2)) * turns);
-        left = -(((velocity / turns) + (Constants.robotLength / 2)) * turns);
+        right = -((((-velocity) / turns) - (Constants.robotLength / 2)) * turns);
+        left = -((((-velocity) / turns) + (Constants.robotLength / 2)) * turns);
       } else if (turns < 0) {
-        right =
-          -(((velocity / turns) + (Constants.robotLength / 2)) * (-turns));
+        right = -(((velocity / turns) + (Constants.robotLength / 2)) * (-turns));
         left = -(((velocity / turns) - (Constants.robotLength / 2)) * (-turns));
       } else {
         right = velocity;
@@ -240,9 +233,8 @@ public class Chassis extends SubsystemBase {
     //     xSpeed - The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
     // zRotation - The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
     // isQuickTurn - If set, overrides constant-curvature turning for turn-in-place maneuvers.
-    this.leftMotors = new SpeedControllerGroup(this.frontLeft, this.backLeft);
-    this.rightMotors =
-      new SpeedControllerGroup(this.frontRight, this.backRight);
+    this.leftMotors = new SpeedControllerGroup((SpeedController)this.frontLeft, (SpeedController)this.backLeft);
+    this.rightMotors = new SpeedControllerGroup((SpeedController)this.frontRight, (SpeedController)this.backRight);
     this.m_drive = new DifferentialDrive(this.leftMotors, this.rightMotors);
     this.m_drive.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
