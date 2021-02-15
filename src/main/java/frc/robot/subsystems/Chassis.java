@@ -8,9 +8,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode; // import control modes
-import com.ctre.phoenix.motorcontrol.can.TalonFX; // import the tlaonFX
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX; // import the tlaonFX
 import com.ctre.phoenix.sensors.PigeonIMU;
-
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup; // import the speed control group type
 import edu.wpi.first.wpilibj.drive.DifferentialDrive; // import the diffrential drive
@@ -23,10 +22,10 @@ import frc.robot.Constants; // import all the measured constants
 public class Chassis extends SubsystemBase {
 
   // TO DO: check the engines direction, maybe invert
-  private TalonFX frontRight; // front right engine
-  private TalonFX frontLeft; // front left engine
-  private TalonFX backRight; // back right engine
-  private TalonFX backLeft; // back left engine
+  private WPI_TalonFX frontRight; // front right engine
+  private WPI_TalonFX frontLeft; // front left engine
+  private WPI_TalonFX backRight; // back right engine
+  private WPI_TalonFX backLeft; // back left engine
   private PigeonIMU gyro;
   private DifferentialDrive m_drive; // instance of the premade diffrential drive
   private SpeedControllerGroup leftMotors; // a group which contains both left motors
@@ -36,10 +35,10 @@ public class Chassis extends SubsystemBase {
    * Creates a new Chassis.
    */
   public Chassis() {
-    frontLeft = new TalonFX(Constants.leftFront);
-    backLeft = new TalonFX(Constants.leftBack);
-    frontRight = new TalonFX(Constants.rightFront);
-    backRight = new TalonFX(Constants.rightBack);
+    frontLeft = new WPI_TalonFX(Constants.leftFront);
+    backLeft = new WPI_TalonFX(Constants.leftBack);
+    frontRight = new WPI_TalonFX(Constants.rightFront);
+    backRight = new WPI_TalonFX(Constants.rightBack);
     gyro = new PigeonIMU(Constants.gyroPort);
     backLeft.follow(frontLeft);
     backRight.follow(frontRight);
