@@ -54,7 +54,7 @@ public class Drive extends CommandBase {
         turns = controller.getX(Hand.kRight);
         break;
       case tank:
-        chassis.setVelocity(controller.getY(Hand.kRight), controller.getY(Hand.kLeft));
+        chassis.setVelocity(controller.getY(Hand.kRight)*Constants.maxVelocity, controller.getY(Hand.kLeft)*Constants.maxVelocity);
         break;
       case singer:
         velocity = controller.getTriggerAxis(Hand.kRight)-controller.getTriggerAxis(Hand.kLeft);
