@@ -89,12 +89,6 @@ public class Chassis extends SubsystemBase {
   }
 
   public void radialAccelaration(double velocity, double turns) {
-    if (Math.abs(velocity) < 0.02) {
-      velocity = 0;
-    }
-    if (Math.abs(turns) < 0.005) {
-      turns = 0;
-    }
     velocity = velocity * Constants.maxVelocity;
     turns = turns * Constants.maxRadialAccelaration;
     double right = 0;
