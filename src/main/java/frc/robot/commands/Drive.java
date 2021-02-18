@@ -61,7 +61,7 @@ public class Drive extends CommandBase {
         turns = controller.getX(Hand.kRight);
         break;
       case tank:
-        chassis.setVelocity(controller.getY(Hand.kRight), controller.getY(Hand.kLeft));
+        chassis.setVelocity(controller.getY(Hand.kRight)*Constants.maxVelocity, controller.getY(Hand.kLeft)*Constants.maxVelocity);
         break;
       case singer:
         velocity = controller.getTriggerAxis(Hand.kRight)-controller.getTriggerAxis(Hand.kLeft);
@@ -88,9 +88,21 @@ public class Drive extends CommandBase {
           chassis.curvatureDrive(velocity, turns, isQuickTurn); 
           break; 
         case radialAccelaration:
+          if (Math.abs(velocity) < 0.02) {
+            velocity = 0;
+          }
+          if (Math.abs(turns) < 0.005) {
+            turns = 0;
+          }
           chassis.radialAccelaration(velocity, turns);
           break;
         case angularVelocity:
+          if (Math.abs(velocity) < 0.02) {
+            velocity = 0;
+          }
+          if (Math.abs(turns) < 0.005) {
+            turns = 0;
+          }
           chassis.angularVelocity(velocity, turns);
           break;
       }

@@ -239,8 +239,7 @@ public class Chassis extends SubsystemBase {
         right = ((velocity / turns) - (Constants.robotLength / 2)) * turns;
         left = ((velocity / turns) + (Constants.robotLength / 2)) * turns;
       } else if (turns < 0) {
-        right =
-          ((velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns);
+        right = ((velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns);
         left = ((velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns);
       } else {
         right = velocity;
@@ -248,12 +247,10 @@ public class Chassis extends SubsystemBase {
       }
     } else if (velocity < 0) {
       if (turns > 0) {
-        right =
-          -((((-velocity) / turns) - (Constants.robotLength / 2)) * turns);
-        left = -(((velocity / turns) + (Constants.robotLength / 2)) * turns);
+        right = -((((-velocity) / turns) - (Constants.robotLength / 2)) * turns);
+        left = -((((-velocity) / turns) + (Constants.robotLength / 2)) * turns);
       } else if (turns < 0) {
-        right =
-          -(((velocity / turns) + (Constants.robotLength / 2)) * (-turns));
+        right = -(((velocity / turns) + (Constants.robotLength / 2)) * (-turns));
         left = -(((velocity / turns) - (Constants.robotLength / 2)) * (-turns));
       } else {
         right = velocity;
