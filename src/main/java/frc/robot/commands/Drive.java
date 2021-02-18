@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Chassis;
-import java.lang.Math.toDegrees; 
-import java.lang.Math.atan; 
-
+// some debugging power
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends CommandBase {
 
   public enum InputHandler{
-    tank,singer,triggerTurns,YandX, arcadeDrive, curvatureDrive
+    tank,singer,triggerTurns,YandX
   }
   public enum DriveStates {
     curvatureDrive, arcadeDrive, angularVelocity, radialAccelaration
@@ -28,6 +28,8 @@ public class Drive extends CommandBase {
   private XboxController controller;
   private InputHandler inputHandler;
   private DriveStates driveState; 
+  private double velocity; 
+  private double turns; 
   /**
    * Creates a new Drive.
    */
@@ -37,6 +39,9 @@ public class Drive extends CommandBase {
     controller = new XboxController(Constants.xboxPort);
     this.inputHandler = inputHandler;
     this.driveState = driveState;
+    this.velocity = 0; 
+    this.turns = 0; 
+    addRequirements(chassis);
   }
 
   // Called when the command is initially scheduled.
@@ -48,8 +53,8 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double velocity = 0;
-    double turns = 0;
+    this.velocity = 0;
+    this.turns = 0;
     switch(inputHandler){
       case YandX:
         velocity = controller.getY(Hand.kLeft);
@@ -71,16 +76,16 @@ public class Drive extends CommandBase {
       double zRotation = -5, xSpeed = 5; 
       switch(driveState) {
         case arcadeDrive: 
-          zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
-          xSpeed = controller.getY(Hand.kLeft); 
-          chassis.arcadeDrive(xSpeed, zRotation, true); 
+          // zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
+          // xSpeed = controller.getY(Hand.kLeft); 
+          chassis.arcadeDrive(velocity, turns, true); 
           break; 
         case curvatureDrive:
           // TO DO: Decide if and when we want to use isQuickTurn, and what button to put it on
-          zRotation = toDegrees(atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
-          xSpeed = controller.getY(Hand.kLeft); 
-          isQuickTurn = controller.getBumper(Hand.kRight);
-          chassis.curvatureDrive(xSpeed, zRotation, isQuickTurn); 
+          // zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
+          // xSpeed = controller.getY(Hand.kLeft); 
+          boolean isQuickTurn = controller.getBumper(Hand.kRight);
+          chassis.curvatureDrive(velocity, turns, isQuickTurn); 
           break; 
         case radialAccelaration:
           chassis.radialAccelaration(velocity, turns);
@@ -102,4 +107,13 @@ public class Drive extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
+  public double getVel() {  return this.velocity;   }
+
+  // public void initSendable(SendableBuilder builder) {
+  //   builder.addDoubleProperty("vel", this::getVel(), null);
+
+
+  // }
+
 }

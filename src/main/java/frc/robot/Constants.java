@@ -16,11 +16,15 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static int rightFront = 1;
-    public static int rightBack = 2;
+    public static int rightFront = 2;
+    public static int rightBack = 1;
     public static int leftFront = 3;
     public static int leftBack = 4;
-    public static double pulsesPerMeter = 0.5;
+
+    public static double wheelDiameter = 0.1524;
+    public static double pulsePerRotation = 800;
+
+    public static double pulsesPerMeter = pulsePerRotation / (wheelDiameter * Math.PI);
     public static int gyroPort = 0;
 
     public static int xboxPort = 0;
@@ -29,4 +33,12 @@ public final class Constants {
     public static double maxVelocity = 4;
     public static double maxRadialAccelaration = 1;
     public static double maxAngularVelocity = 4*Math.PI/180;
+
+    public static final double kp = 0.01; 
+    public static final double ki = 0;
+    public static final double ks = 0.797; 
+    public static final double kv = 2.54; 
+    public static final double ka = 0.862; 
+    public static final double kd = 0; 
+
 }

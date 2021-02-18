@@ -23,9 +23,9 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Chassis chassis = new Chassis();
-
-  private final Drive driveCommand = new Drive(chassis,InputHandler.YandX,DriveStates.radialAccelaration);
+  private final DriveStates dStates = DriveStates.arcadeDrive; 
+  private final Chassis chassis = new Chassis(dStates);
+  private final Drive driveCommand = new Drive(chassis,InputHandler.singer,dStates);
 
 
 
@@ -54,7 +54,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return driveCommand;
+    return null;
   }
 
   public Command getTeleopCommand() {
