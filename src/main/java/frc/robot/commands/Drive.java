@@ -73,7 +73,6 @@ public class Drive extends CommandBase {
         break;
     }
     if(inputHandler!=InputHandler.tank){
-      double zRotation = -5, xSpeed = 5; 
       switch(driveState) {
         case arcadeDrive: 
           // zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 

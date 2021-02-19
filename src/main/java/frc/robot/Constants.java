@@ -31,8 +31,8 @@ public final class Constants {
 
     public static double robotLength = 0.575;
     public static double maxVelocity = 4;
-    public static double maxRadialAccelaration = 1;
-    public static double maxAngularVelocity = 4*Math.PI/180;
+    public static double maxRadialAccelaration = 10;
+    public static double maxAngularVelocity = 40*Math.PI/180;
 
     public static final double kp = 0.01; 
     public static final double ki = 0;

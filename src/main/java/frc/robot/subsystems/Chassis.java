@@ -65,7 +65,6 @@ public class Chassis extends SubsystemBase {
       this.leftMotors = new SpeedControllerGroup((SpeedController)this.frontLeft, (SpeedController)this.backLeft);
       this.rightMotors = new SpeedControllerGroup((SpeedController)this.frontRight, (SpeedController)this.backRight);
       this.m_drive = new DifferentialDrive(this.leftMotors, this.rightMotors);
-      System.out.println("uaguicgsvcsilvuisvoshvuisfgvuhsuivasuvuihvuiesugvui");
       this.m_drive.setMaxOutput(0.5);
       m_drive.setRightSideInverted(false);
     }
@@ -105,7 +104,6 @@ public class Chassis extends SubsystemBase {
   public double getAngle() {
     double angle = gyro.getFusedHeading();
 
-    System.out.println("uaguicgsvcsilvuisvoshvuisfgvuhsuivasuvuihvuiesugvui");
     if (angle < 0) {
       angle = -((-angle) % 360.0);
       if (angle < -180) {
@@ -141,12 +139,6 @@ public class Chassis extends SubsystemBase {
   }
 
   public void radialAccelaration(double velocity, double turns) {
-    if (Math.abs(velocity) < 0.02) {
-      velocity = 0;
-    }
-    if (Math.abs(turns) < 0.02) {
-      turns = 0;
-    }
     velocity = velocity * Constants.maxVelocity;
     turns = turns * Constants.maxRadialAccelaration;
     double right = 0;
@@ -221,15 +213,8 @@ public class Chassis extends SubsystemBase {
   }
 
   public void angularVelocity(double velocity, double turns) {
-    if (Math.abs(velocity) < 0.02) {
-      velocity = 0;
-    }
-    if (Math.abs(turns) < 0.02) {
-      turns = 0;
-    }
     velocity = velocity * Constants.maxVelocity;
     turns = turns * Constants.maxAngularVelocity;
-    System.out.println("velocity is: " + velocity);
     SmartDashboard.putNumber("velocity", velocity); 
     SmartDashboard.putNumber("Turns", turns); 
     double right = 0.5;
@@ -257,6 +242,7 @@ public class Chassis extends SubsystemBase {
         left = velocity;
       }
     } else {
+      turns= turns*4.5;
       if (turns > 0) {
         right = -(turns * Constants.robotLength / 2);
         left = (turns * Constants.robotLength / 2);
