@@ -198,6 +198,7 @@ public class Chassis extends SubsystemBase {
         left = velocity;
       }
     } else {
+      turns = turns*0.4;
       if (turns > 0) {
         right = -Math.sqrt(turns * Constants.robotLength / 2);
         left = Math.sqrt(turns * Constants.robotLength / 2);
@@ -242,7 +243,7 @@ public class Chassis extends SubsystemBase {
         left = velocity;
       }
     } else {
-      turns= turns*4.5;
+      turns= turns*2;
       if (turns > 0) {
         right = -(turns * Constants.robotLength / 2);
         left = (turns * Constants.robotLength / 2);
