@@ -90,7 +90,7 @@ public class Drive extends CommandBase implements Sendable{
           if (Math.abs(velocity) < 0.02) {
             velocity = 0;
           }
-          if (Math.abs(turns) < 0.0) {
+          if (Math.abs(turns) < 0.02) {
             turns = 0;
           }
           chassis.radialAccelaration(velocity, turns);
