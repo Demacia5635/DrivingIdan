@@ -24,7 +24,7 @@ import frc.robot.Constants; // import all the measured constants
 import frc.robot.commands.Drive.DriveStates;
 import frc.robot.utils.GroupOfMotors;
 
-public class Chassis extends SubsystemBase implements Sendable{
+public class Chassis extends SubsystemBase implements Sendable {
 
   // TO DO: check the engines direction, maybe invert
   private GroupOfMotors right;
@@ -33,8 +33,8 @@ public class Chassis extends SubsystemBase implements Sendable{
   private DifferentialDrive m_drive; // instance of the premade diffrential drive
   private SpeedControllerGroup leftMotors; // a group which contains both left motors
   private SpeedControllerGroup rightMotors; // a group which contains both right motors
-  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.ks, Constants.kv,
-      Constants.ka);
+  private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.ks,
+      Constants.kv, Constants.ka);
 
   /**
    * Creates a new Chassis.
@@ -103,8 +103,10 @@ public class Chassis extends SubsystemBase implements Sendable{
   }
 
   //
-  // gets 2 values between 1 to -1 one to determine the tangent velocity and the other determines the
-  // radial accelaration of the robot the function sets calculated values for the right and left motors
+  // gets 2 values between 1 to -1 one to determine the tangent velocity and the
+  // other determines the
+  // radial accelaration of the robot the function sets calculated values for the
+  // right and left motors
   //
   public void radialAccelaration(double velocity, double turns) {
     velocity = velocity * Constants.maxVelocity;
@@ -116,8 +118,10 @@ public class Chassis extends SubsystemBase implements Sendable{
         right = Math.sqrt(((velocity * velocity / turns) - (Constants.robotLength / 2)) * turns);
         left = Math.sqrt(((velocity * velocity / turns) + (Constants.robotLength / 2)) * turns);
       } else if (turns < 0) {
-        right = Math.sqrt(((velocity * velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns));
-        left = Math.sqrt(((velocity * velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns));
+        right = Math
+            .sqrt(((velocity * velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns));
+        left =
+             Math.sqrt(((velocity * velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns));
       } else {
         right = velocity;
         left = velocity;
@@ -127,8 +131,10 @@ public class Chassis extends SubsystemBase implements Sendable{
         right = -Math.sqrt(((velocity * velocity / turns) - (Constants.robotLength / 2)) * turns);
         left = -Math.sqrt(((velocity * velocity / turns) + (Constants.robotLength / 2)) * turns);
       } else if (turns < 0) {
-        right = -Math.sqrt(((velocity * velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns));
-        left = -Math.sqrt(((velocity * velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns));
+        right = -Math
+            .sqrt(((velocity * velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns));
+        left = -Math
+            .sqrt(((velocity * velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns));
       } else {
         right = velocity;
         left = velocity;
@@ -150,8 +156,10 @@ public class Chassis extends SubsystemBase implements Sendable{
   }
 
   //
-  // gets 2 values between 1 to -1 one to determine the tangent velocity and the other determines the
-  // angular velocity of the robot the function sets calculated values for the right and left motors
+  // gets 2 values between 1 to -1 one to determine the tangent velocity and the
+  // other determines the
+  // angular velocity of the robot the function sets calculated values for the
+  // right and left motors
   //
   public void angularVelocity(double velocity, double turns) {
     velocity = velocity * Constants.maxVelocity;

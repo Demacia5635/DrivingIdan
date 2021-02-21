@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -16,11 +17,12 @@ import frc.robot.subsystems.Chassis;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Drive extends CommandBase {
+public class Drive extends CommandBase implements Sendable{
 
-  public enum InputHandler{
-    tank,singer,triggerTurns,YandX
+  public enum InputHandler {
+    tank, singer, triggerTurns, YandX
   }
+
   public enum DriveStates {
     curvatureDrive, arcadeDrive, angularVelocity, radialAccelaration
   }
@@ -28,9 +30,10 @@ public class Drive extends CommandBase {
   private final Chassis chassis;
   private XboxController controller;
   private InputHandler inputHandler;
-  private DriveStates driveState; 
-  private double velocity; 
-  private double turns; 
+  private DriveStates driveState;
+  private double velocity;
+  private double turns;
+
   /**
    * Creates a new Drive.
    */
@@ -40,15 +43,15 @@ public class Drive extends CommandBase {
     controller = new XboxController(Constants.xboxPort);
     this.inputHandler = inputHandler;
     this.driveState = driveState;
-    this.velocity = 0; 
-    this.turns = 0; 
+    this.velocity = 0;
+    this.turns = 0;
     addRequirements(chassis);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -56,37 +59,33 @@ public class Drive extends CommandBase {
   public void execute() {
     this.velocity = 0;
     this.turns = 0;
-    switch(inputHandler){
+    switch (inputHandler) {
       case YandX:
         velocity = controller.getY(Hand.kLeft);
         turns = controller.getX(Hand.kRight);
         break;
       case tank:
-        chassis.setVelocity(controller.getY(Hand.kRight)*Constants.maxVelocity, controller.getY(Hand.kLeft)*Constants.maxVelocity);
+        chassis.setVelocity(controller.getY(Hand.kRight) * Constants.maxVelocity,
+            controller.getY(Hand.kLeft) * Constants.maxVelocity);
         break;
       case singer:
-        velocity = controller.getTriggerAxis(Hand.kRight)-controller.getTriggerAxis(Hand.kLeft);
+        velocity = controller.getTriggerAxis(Hand.kRight) - controller.getTriggerAxis(Hand.kLeft);
         turns = controller.getX(Hand.kLeft);
         break;
       case triggerTurns:
         velocity = controller.getY(Hand.kLeft);
-        turns = controller.getTriggerAxis(Hand.kRight)-controller.getTriggerAxis(Hand.kLeft);
+        turns = controller.getTriggerAxis(Hand.kRight) - controller.getTriggerAxis(Hand.kLeft);
         break;
     }
-    if(inputHandler!=InputHandler.tank){
-      switch(driveState) {
-        case arcadeDrive: 
-          // zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
-          // xSpeed = controller.getY(Hand.kLeft); 
-          chassis.arcadeDrive(velocity, turns, true); 
-          break; 
+    if (inputHandler != InputHandler.tank) {
+      switch (driveState) {
+        case arcadeDrive:
+          chassis.arcadeDrive(velocity, turns, true);
+          break;
         case curvatureDrive:
-          // TO DO: Decide if and when we want to use isQuickTurn, and what button to put it on
-          // zRotation = Math.toDegrees(Math.atan(controller.getY(Hand.kRight)/controller.getX(Hand.kRight))) / 180; 
-          // xSpeed = controller.getY(Hand.kLeft); 
           boolean isQuickTurn = controller.getBumper(Hand.kRight);
-          chassis.curvatureDrive(velocity, turns, isQuickTurn); 
-          break; 
+          chassis.curvatureDrive(velocity, turns, isQuickTurn);
+          break;
         case radialAccelaration:
           if (Math.abs(velocity) < 0.02) {
             velocity = 0;
