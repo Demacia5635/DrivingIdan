@@ -7,8 +7,12 @@
 
 package frc.robot.subsystems;
 
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; // import the tlaonFX
 import com.ctre.phoenix.sensors.PigeonIMU;
+
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedControllerGroup; // import the speed control group type
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive; // import the diffrential drive
@@ -20,7 +24,7 @@ import frc.robot.Constants; // import all the measured constants
 import frc.robot.commands.Drive.DriveStates;
 import frc.robot.utils.GroupOfMotors;
 
-public class Chassis extends SubsystemBase {
+public class Chassis extends SubsystemBase implements Sendable{
 
   // TO DO: check the engines direction, maybe invert
   private GroupOfMotors right;
@@ -144,8 +148,6 @@ public class Chassis extends SubsystemBase {
   public void angularVelocity(double velocity, double turns) {
     velocity = velocity * Constants.maxVelocity;
     turns = turns * Constants.maxAngularVelocity;
-    SmartDashboard.putNumber("velocity", velocity);
-    SmartDashboard.putNumber("Turns", turns);
     double right = 0.5;
     double left = 0.5;
     if (velocity > 0) {
@@ -183,8 +185,6 @@ public class Chassis extends SubsystemBase {
         left = velocity;
       }
     }
-    SmartDashboard.putNumber("left", left);
-    SmartDashboard.putNumber("right", right);
     setVelocity(right, left);
   }
 
@@ -212,8 +212,11 @@ public class Chassis extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  @Override
   public void initSendable(SendableBuilder builder) {
     // builder.addDoubleProperty(key, getter, setter);
-
+    builder.addDoubleProperty("Left Speed", this::getLeftVelocity, null);
+    builder.addDoubleProperty("Right Speed", this::getRightVelocity, null);
+    builder.addDoubleProperty("Angle", this::getAngle, null);
   }
 }
