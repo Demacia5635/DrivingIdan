@@ -118,4 +118,9 @@ public class Drive extends CommandBase implements Sendable{
   public boolean isFinished() {
     return false;
   }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    // builder.addDoubleProperty(key, getter, setter);
+  }
 }
