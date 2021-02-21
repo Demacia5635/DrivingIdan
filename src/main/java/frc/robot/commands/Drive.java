@@ -24,6 +24,7 @@ public class Drive extends CommandBase {
   public enum DriveStates {
     curvatureDrive, arcadeDrive, angularVelocity, radialAccelaration
   }
+
   private final Chassis chassis;
   private XboxController controller;
   private InputHandler inputHandler;
@@ -90,7 +91,7 @@ public class Drive extends CommandBase {
           if (Math.abs(velocity) < 0.02) {
             velocity = 0;
           }
-          if (Math.abs(turns) < 0.005) {
+          if (Math.abs(turns) < 0.0) {
             turns = 0;
           }
           chassis.radialAccelaration(velocity, turns);
@@ -99,7 +100,7 @@ public class Drive extends CommandBase {
           if (Math.abs(velocity) < 0.02) {
             velocity = 0;
           }
-          if (Math.abs(turns) < 0.005) {
+          if (Math.abs(turns) < 0.02) {
             turns = 0;
           }
           chassis.angularVelocity(velocity, turns);
@@ -118,13 +119,4 @@ public class Drive extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-
-  public double getVel() {  return this.velocity;   }
-
-  // public void initSendable(SendableBuilder builder) {
-  //   builder.addDoubleProperty("vel", this::getVel(), null);
-
-
-  // }
-
 }
