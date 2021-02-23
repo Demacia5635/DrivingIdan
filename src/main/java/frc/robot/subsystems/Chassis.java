@@ -45,6 +45,10 @@ public class Chassis extends SubsystemBase implements Sendable {
     WPI_TalonSRX rightBack = new WPI_TalonSRX(Constants.rightBack);
     WPI_TalonSRX leftBack = new WPI_TalonSRX(Constants.leftBack);
 
+    rightFront.setSelectedSensorPosition(0);
+    rightBack.setSelectedSensorPosition(0);
+    leftFront.setSelectedSensorPosition(0);
+    leftBack.setSelectedSensorPosition(0);
     rightFront.setInverted(true);
     leftFront.setInverted(true);
     rightBack.setInverted(true);
@@ -59,6 +63,7 @@ public class Chassis extends SubsystemBase implements Sendable {
     } else {
       this.right = new GroupOfMotors(rightFront, rightBack);
       this.left = new GroupOfMotors(leftFront, leftBack);
+      this.right.setEncoderInvereted(true);
       this.gyro = new PigeonIMU(Constants.gyroPort);
       this.gyro.setFusedHeading(0);
     }
@@ -115,26 +120,22 @@ public class Chassis extends SubsystemBase implements Sendable {
     double left = 0;
     if (velocity > 0) {
       if (turns > 0) {
-        right = Math.sqrt(((velocity * velocity / turns) - (Constants.robotLength / 2)) * turns);
-        left = Math.sqrt(((velocity * velocity / turns) + (Constants.robotLength / 2)) * turns);
+        right = coolSqrt(((velocity * velocity / turns) + (Constants.robotLength / 2)) * turns);
+        left = coolSqrt(((velocity * velocity / turns) - (Constants.robotLength / 2)) * turns);
       } else if (turns < 0) {
-        right = Math
-            .sqrt(((velocity * velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns));
-        left =
-             Math.sqrt(((velocity * velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns));
+        right = coolSqrt(((velocity * velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns));
+        left = coolSqrt(((velocity * velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns));
       } else {
         right = velocity;
         left = velocity;
       }
     } else if (velocity < 0) {
       if (turns > 0) {
-        right = -Math.sqrt(((velocity * velocity / turns) - (Constants.robotLength / 2)) * turns);
-        left = -Math.sqrt(((velocity * velocity / turns) + (Constants.robotLength / 2)) * turns);
+        right = coolSqrt(((velocity * velocity / turns) + (Constants.robotLength / 2)) * turns);
+        left = coolSqrt(((velocity * velocity / turns) - (Constants.robotLength / 2)) * turns);
       } else if (turns < 0) {
-        right = -Math
-            .sqrt(((velocity * velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns));
-        left = -Math
-            .sqrt(((velocity * velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns));
+        right = coolSqrt(((velocity * velocity / (-turns)) - (Constants.robotLength / 2)) * (-turns));
+        left = coolSqrt(((velocity * velocity / (-turns)) + (Constants.robotLength / 2)) * (-turns));
       } else {
         right = velocity;
         left = velocity;
@@ -142,11 +143,11 @@ public class Chassis extends SubsystemBase implements Sendable {
     } else {
       turns = turns * 0.4;
       if (turns > 0) {
-        right = -Math.sqrt(turns * Constants.robotLength / 2);
-        left = Math.sqrt(turns * Constants.robotLength / 2);
+        right = coolSqrt(turns * Constants.robotLength / 2);
+        left = -coolSqrt(turns * Constants.robotLength / 2);
       } else if (turns < 0) {
-        right = Math.sqrt((-turns) * Constants.robotLength / 2);
-        left = -Math.sqrt((-turns) * Constants.robotLength / 2);
+        right = -coolSqrt((-turns) * Constants.robotLength / 2);
+        left = coolSqrt((-turns) * Constants.robotLength / 2);
       } else {
         right = velocity;
         left = velocity;
@@ -164,8 +165,8 @@ public class Chassis extends SubsystemBase implements Sendable {
   public void angularVelocity(double velocity, double turns) {
     velocity = velocity * Constants.maxVelocity;
     turns = turns * Constants.maxAngularVelocity;
-    double right = 0.5;
-    double left = 0.5;
+    double right = 0;
+    double left = 0;
     if (velocity > 0) {
       if (turns > 0) {
         right = ((velocity / turns) - (Constants.robotLength / 2)) * turns;
@@ -204,6 +205,10 @@ public class Chassis extends SubsystemBase implements Sendable {
     setVelocity(right, left);
   }
 
+  public double coolSqrt(double num){
+    return Math.signum(num) * Math.sqrt(Math.abs(num));
+  }
+
   public void arcadeDrive(double xSpeed, double zRotation, boolean squareInputs) {
     // xSpeed - The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
     // zRotation - The robot's rotation rate around the Z axis [-1.0..1.0].
@@ -234,5 +239,7 @@ public class Chassis extends SubsystemBase implements Sendable {
     builder.addDoubleProperty("Left Speed", this::getLeftVelocity, null);
     builder.addDoubleProperty("Right Speed", this::getRightVelocity, null);
     builder.addDoubleProperty("Angle", this::getAngle, null);
+    builder.addDoubleProperty("Left Distance", this.left::getEncoder, null);
+    builder.addDoubleProperty("Right Distance", this.right::getEncoder, null);
   }
 }

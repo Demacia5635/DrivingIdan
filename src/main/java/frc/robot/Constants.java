@@ -26,13 +26,14 @@ public final class Constants {
     public static double wheelDiameter = 0.1524;
     public static double pulsePerRotation = 800;
 
-    public static double pulsesPerMeter = pulsePerRotation / (wheelDiameter * Math.PI);
-    public static int gyroPort = 0;
+    public static double pulsesPerMeter = 1675;
+//    public static double pulsesPerMeter = pulsePerRotation / (wheelDiameter * Math.PI);
+    public static int gyroPort = 11;
 
     public static int xboxPort = 0;
 
     public static double robotLength = 0.575;//meters
-    public static double maxVelocity = 4;//meters per second
+    public static double maxVelocity = 2;//meters per second
     public static double maxRadialAccelaration = 16;//meters per squared second
     public static double maxAngularVelocity = Math.PI;//radians per second
 

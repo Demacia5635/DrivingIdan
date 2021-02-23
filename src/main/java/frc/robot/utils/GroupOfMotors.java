@@ -18,8 +18,9 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import frc.robot.Constants;
 
 public class GroupOfMotors {
-    private TalonSRX lead;
-    private TalonSRX[] followers;
+    private WPI_TalonSRX lead;
+    private WPI_TalonSRX[] followers;
+    private boolean encoderInverted = false;
 
     public GroupOfMotors(int... talons) {
         lead = new WPI_TalonSRX(talons[0]);
@@ -27,7 +28,7 @@ public class GroupOfMotors {
         lead.config_kD(0, Constants.kd);
         lead.setNeutralMode(NeutralMode.Brake);
         lead.enableCurrentLimit(true);
-        followers = new TalonSRX[talons.length - 1];
+        followers = new WPI_TalonSRX[talons.length - 1];
         for (int i = 0; i < followers.length; i++) {
             followers[i] = new WPI_TalonSRX(talons[i + 1]);
             followers[i].setNeutralMode(NeutralMode.Brake);
@@ -41,12 +42,16 @@ public class GroupOfMotors {
         lead.config_kD(0, Constants.kd);
         lead.setNeutralMode(NeutralMode.Brake);
         lead.enableCurrentLimit(true);
-        followers = new TalonSRX[talons.length - 1];
+        followers = new WPI_TalonSRX[talons.length - 1];
         for (int i = 0; i < followers.length; i++) {
             followers[i] = talons[i + 1];
             followers[i].setNeutralMode(NeutralMode.Brake);
             followers[i].follow(lead);
         }
+    }
+
+    public void setEncoderInvereted(boolean isInverted) {
+        this.encoderInverted = isInverted; 
     }
 
     public void setPower(double power) { // -1 <= power <= 1
@@ -58,7 +63,7 @@ public class GroupOfMotors {
     }
 
     public double getVelocity() {
-        return lead.getSelectedSensorVelocity() / Constants.pulsesPerMeter * 10;
+        return lead.getSelectedSensorVelocity() / Constants.pulsesPerMeter * 10 * (encoderInverted ? -1 : 1);
     }
 
     public void resetEncoder() {
@@ -68,7 +73,7 @@ public class GroupOfMotors {
     public void setVelocity(double vel, SimpleMotorFeedforward aff) {// M/S
         double speed = (vel * Constants.pulsesPerMeter / 10.);
         double a = vel - getVelocity();
-        double af = aff.calculate(vel, a);
+        double af = aff.calculate(vel, a) / 12;
         lead.set(ControlMode.Velocity, speed, DemandType.ArbitraryFeedForward, af);
     }
 
@@ -101,7 +106,7 @@ public class GroupOfMotors {
     }
 
     public double getEncoder() { // Pulses
-        return lead.getSelectedSensorPosition();
+        return lead.getSelectedSensorPosition() * (encoderInverted ? -1 : 1);
     }
 
     public double getDistance() { // Meters

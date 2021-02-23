@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveStates dStates = DriveStates.arcadeDrive; 
+  private final DriveStates dStates = DriveStates.radialAccelaration; 
   private final Chassis chassis = new Chassis(dStates);
   private final Drive driveCommand = new Drive(chassis,InputHandler.singer,dStates);
 
