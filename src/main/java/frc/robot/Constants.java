@@ -34,7 +34,7 @@ public final class Constants {
 
     public static double robotLength = 0.575;//meters
     public static double maxVelocity = 2;//meters per second
-    public static double maxRadialAccelaration = 16;//meters per squared second
+    public static double maxRadialAccelaration = 4;//meters per squared second
     public static double maxAngularVelocity = Math.PI;//radians per second
 
     public static final double kp = 0.01;
